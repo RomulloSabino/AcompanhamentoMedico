@@ -1,12 +1,13 @@
 workflows:
   ios-cordova-build:
     name: Build iOS Cordova
+
     environment:
-      node:
-        version: 12.13.0
-      xcode: "15.0"
+      node: 12.13.0
+      xcode: 15.0
       vars:
         CORDOVA_IOS_VERSION: "6.2.0"
+
     scripts:
       - name: Instalar Cordova e dependências
         script: |
@@ -21,16 +22,7 @@ workflows:
 
       - name: Construir IPA
         script: |
-          cordova build ios --release
+          cordova build ios --release --device
 
     artifacts:
-      - "platforms/ios/build/**/*.ipa"
-      - "platforms/ios/build/device/*.ipa"
-
-    publishing:
-      app_store_connect:
-        apple_id: $APPLE_ID
-        api_key_id: $APP_STORE_KEY_ID
-        issuer_id: $APP_STORE_ISSUER_ID
-        api_key: $APP_STORE_API_KEY
-        submit_to_testflight: true
+      - platforms/ios/build/device/*.ipa
