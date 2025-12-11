@@ -1,2 +1,0 @@
-# AcompanhamentoMedico
-Acompanhamento medico

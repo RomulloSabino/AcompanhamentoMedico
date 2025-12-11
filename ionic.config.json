@@ -1,7 +1,0 @@
-{
-  "name": "AppAcompanhamentoMedico",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
-}
