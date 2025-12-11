@@ -1,6 +1,6 @@
 workflows:
-  ios-cordova-build:
-    name: Build iOS Cordova
+  ios-cordova-unsigned:
+    name: Build iOS Cordova (Unsigned IPA)
 
     environment:
       node: 12.13.0
@@ -20,9 +20,10 @@ workflows:
           cordova platform remove ios || true
           cordova platform add ios@${CORDOVA_IOS_VERSION}
 
-      - name: Construir IPA
+      - name: Construir IPA (não assinado)
         script: |
           cordova build ios --release --device
 
     artifacts:
       - platforms/ios/build/device/*.ipa
+      - platforms/ios/build/**/*.xcarchive
