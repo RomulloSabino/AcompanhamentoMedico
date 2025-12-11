@@ -1,62 +1,36 @@
 workflows:
-  ios_testflight:
-    name: "iOS Release – TestFlight (Ionic + Cordova)"
-    instance_type: mac_mini_m2
-    max_build_duration: 60
+  ios-cordova-build:
+    name: Build iOS Cordova
     environment:
-      node: latest
-      npm: default
-      xcode: latest
-      cocoapods: default
+      node:
+        version: 12.13.0
+      xcode: "15.0"
       vars:
-        BUNDLE_ID: "br.acol.com.saudi.acompanhamento.medico"
+        CORDOVA_IOS_VERSION: "6.2.0"
     scripts:
-      - name: Install global CLIs
+      - name: Instalar Cordova e dependências
         script: |
-          npm install -g @ionic/cli cordova
+          npm install -g npm@6.12.0
+          npm install -g cordova@11.1.0
+          npm install
 
-      - name: Install project dependencies
-        script: |
-          npm ci
-
-      - name: Ionic build (web assets)
-        script: |
-          ionic build --prod
-
-      - name: Add iOS platform (Cordova)
+      - name: Preparar plataforma iOS
         script: |
           cordova platform remove ios || true
-          cordova platform add ios
+          cordova platform add ios@${CORDOVA_IOS_VERSION}
 
-      - name: Prepare Cordova iOS project
+      - name: Construir IPA
         script: |
-          ionic cordova prepare ios
-
-      - name: Build Xcode archive
-        script: |
-          cd platforms/ios
-          xcodebuild \
-            -workspace $(ls *.xcworkspace) \
-            -scheme $(ls | grep .xcodeproj | sed 's/.xcodeproj//') \
-            -configuration Release \
-            -archivePath $CM_BUILD_DIR/App.xcarchive \
-            archive
-
-      - name: Export IPA
-        script: |
-          xcodebuild \
-            -exportArchive \
-            -archivePath $CM_BUILD_DIR/App.xcarchive \
-            -exportOptionsPlist exportOptions.plist \
-            -exportPath $CM_BUILD_DIR
+          cordova build ios --release
 
     artifacts:
-      - $CM_BUILD_DIR/*.ipa
+      - "platforms/ios/build/**/*.ipa"
+      - "platforms/ios/build/device/*.ipa"
 
     publishing:
       app_store_connect:
-        api_key: $APP_STORE_API_KEY
-        key_id: $APP_STORE_KEY_ID
+        apple_id: $APPLE_ID
+        api_key_id: $APP_STORE_KEY_ID
         issuer_id: $APP_STORE_ISSUER_ID
+        api_key: $APP_STORE_API_KEY
         submit_to_testflight: true
-        submit_to_app_store: false
