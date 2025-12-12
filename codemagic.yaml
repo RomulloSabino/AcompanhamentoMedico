@@ -15,7 +15,7 @@ workflows:
           npm install -g cordova@11.1.0
           npm install
 
-      - name: Remover plataforma Android (evita erro de permissões)
+      - name: Remover plataforma Android (evita plugins rodando scripts errados)
         script: |
           cordova platform remove android || true
 
@@ -24,9 +24,15 @@ workflows:
           cordova platform remove ios || true
           cordova platform add ios@${CORDOVA_IOS_VERSION}
 
+      - name: Ajustar o iOS Deployment Target no projeto
+        script: |
+          echo "Aplicando iOS Deployment Target 12.0 via config.xml"
+          # Cordova vai usar o valor do config.xml, mas garantimos que não esteja 11
+          sed -i "" 's/11.0/12.0/g' platforms/ios/*/project.pbxproj || true
+
       - name: Construir IPA (não assinado)
         script: |
-          cordova build ios --release --device
+          cordova build ios --release --device --buildConfig=build.json
 
     artifacts:
       - platforms/ios/build/device/*.ipa
