@@ -2,16 +2,12 @@
   "ios": {
     "debug": {
       "developmentTeam": "SSADB2592Z",
-      "signingStyle": "manual",
-      "provisioningProfile": "",
-      "codeSignIdentity": "iPhone Developer"
+      "signingStyle": "automatic"
     },
     "release": {
       "developmentTeam": "SSADB2592Z",
-      "signingStyle": "manual",
-      "provisioningProfile": "",
-      "codeSignIdentity": "iPhone Developer",
-      "packageType": "ad-hoc"
+      "signingStyle": "automatic",
+      "packageType": "app-store"
     }
   }
 }
