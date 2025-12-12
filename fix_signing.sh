@@ -1,33 +1,20 @@
 #!/usr/bin/env bash
+set -e
+
+PROJECT_FILE="platforms/ios/Saudi-AcomMed.xcodeproj/project.pbxproj"
 
 echo "Limpando configurações manuais de assinatura..."
 
-FILES=$(find platforms/ios -name project.pbxproj)
+# Remove todas as linhas relacionadas à assinatura manual
+sed -i '' '/CODE_SIGN_STYLE/d' "$PROJECT_FILE"
+sed -i '' '/CODE_SIGN_IDENTITY/d' "$PROJECT_FILE"
+sed -i '' '/DEVELOPMENT_TEAM =/d' "$PROJECT_FILE"
+sed -i '' '/PROVISIONING_PROFILE /d' "$PROJECT_FILE"
+sed -i '' '/PROVISIONING_PROFILE_SPECIFIER/d' "$PROJECT_FILE"
 
-for FILE in $FILES; do
-  echo "Limpando: $FILE"
-  sed -i "" '/CODE_SIGN_IDENTITY/d' "$FILE"
-  sed -i "" '/CODE_SIGN_STYLE/d' "$FILE"
-  sed -i "" '/PROVISIONING_PROFILE/d' "$FILE"
-  sed -i "" '/PROVISIONING_PROFILE_SPECIFIER/d' "$FILE"
-  sed -i "" '/DEVELOPMENT_TEAM =/d' "$FILE"
-done
+# Força o Xcode a usar assinatura automática
+echo "Inserindo DEVELOPMENT_TEAM e CODE_SIGN_STYLE Automatic..."
 
-CONFIG_FILES=$(find platforms/ios -name project.xcconfig)
+sed -i '' 's/buildSettings = {/buildSettings = {\nDEVELOPMENT_TEAM = SSADB2592Z;\nCODE_SIGN_STYLE = Automatic;/' "$PROJECT_FILE"
 
-for FILE in $CONFIG_FILES; do
-  echo "Limpando: $FILE"
-  sed -i "" '/CODE_SIGN_IDENTITY/d' "$FILE"
-  sed -i "" '/DEVELOPMENT_TEAM/d' "$FILE"
-  sed -i "" '/PROVISIONING_PROFILE/d' "$FILE"
-done
-
-echo "ETAPA FINAL: forçando assinatura automática no Xcode PROJETO"
-PROJECT_FILE="platforms/ios/Saudi-AcomMed.xcodeproj/project.pbxproj"
-
-if [ -f "$PROJECT_FILE" ]; then
-  echo "Inserindo: CODE_SIGN_STYLE = Automatic"
-  sed -i "" 's/PRODUCT_BUNDLE_IDENTIFIER = /CODE_SIGN_STYLE = Automatic;\nPRODUCT_BUNDLE_IDENTIFIER = /' "$PROJECT_FILE"
-fi
-
-echo "Pronto. Xcode vai assinar automaticamente."
+echo "Finalizado."

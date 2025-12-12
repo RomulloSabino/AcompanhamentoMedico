@@ -15,7 +15,7 @@ workflows:
           npm install -g cordova@11.1.0
           npm install
 
-      - name: Remover plataforma Android (evita conflito)
+      - name: Remover plataforma Android
         script: |
           cordova platform remove android || true
 
@@ -28,7 +28,7 @@ workflows:
         script: |
           chmod +x fix_signing.sh
 
-      - name: Corrigir problemas de assinatura (automático)
+      - name: Limpar assinaturas manuais e forçar Automatic Signing
         script: |
           ./fix_signing.sh
 

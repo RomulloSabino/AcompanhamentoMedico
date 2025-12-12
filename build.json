@@ -1,12 +1,10 @@
 {
   "ios": {
     "debug": {
-      "developmentTeam": "SSADB2592Z",
-      "packageType": "development"
+      "developmentTeam": "SSADB2592Z"
     },
     "release": {
-      "developmentTeam": "SSADB2592Z",
-      "packageType": "app-store"
+      "developmentTeam": "SSADB2592Z"
     }
   }
 }
