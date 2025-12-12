@@ -2,11 +2,10 @@
   "ios": {
     "debug": {
       "developmentTeam": "SSADB2592Z",
-      "signingStyle": "automatic"
+      "packageType": "development"
     },
     "release": {
       "developmentTeam": "SSADB2592Z",
-      "signingStyle": "automatic",
       "packageType": "app-store"
     }
   }

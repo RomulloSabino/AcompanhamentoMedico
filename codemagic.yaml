@@ -15,7 +15,7 @@ workflows:
           npm install -g cordova@11.1.0
           npm install
 
-      - name: Remover plataforma Android
+      - name: Remover plataforma Android (evita conflito)
         script: |
           cordova platform remove android || true
 
@@ -24,16 +24,13 @@ workflows:
           cordova platform remove ios || true
           cordova platform add ios@${CORDOVA_IOS_VERSION}
 
-      - name: Limpar configurações manuais de assinatura no Xcode
+      - name: Permitir execução do script de correção
         script: |
-          echo "Removendo CODE_SIGN_CONFIGS do Xcode..."
-          PROJECT_FILE="platforms/ios/Saudi-AcomMed.xcodeproj/project.pbxproj"
-          sed -i "" '/CODE_SIGN_IDENTITY/d' $PROJECT_FILE || true
-          sed -i "" '/CODE_SIGN_STYLE/d' $PROJECT_FILE || true
-          sed -i "" '/PROVISIONING_PROFILE/d' $PROJECT_FILE || true
-          sed -i "" '/PROVISIONING_PROFILE_SPECIFIER/d' $PROJECT_FILE || true
-          sed -i "" '/DEVELOPMENT_TEAM =/d' $PROJECT_FILE || true
-          echo "Pronto. Xcode vai assinar automaticamente."
+          chmod +x fix_signing.sh
+
+      - name: Corrigir problemas de assinatura (automático)
+        script: |
+          ./fix_signing.sh
 
       - name: Build iOS com assinatura automática
         script: |
