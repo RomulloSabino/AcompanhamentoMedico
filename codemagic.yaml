@@ -3,7 +3,7 @@ workflows:
     name: Build iOS Cordova (Unsigned IPA)
 
     environment:
-      node: 12.13.0
+      node: 14.20.0
       xcode: 16.1
       vars:
         CORDOVA_IOS_VERSION: "6.2.0"
@@ -11,7 +11,7 @@ workflows:
     scripts:
       - name: Instalar Cordova e dependências
         script: |
-          npm install -g npm@6.12.0
+          npm install -g npm@6.14.17
           npm install -g cordova@11.1.0
           npm install
 
@@ -27,3 +27,4 @@ workflows:
     artifacts:
       - platforms/ios/build/device/*.ipa
       - platforms/ios/build/**/*.xcarchive
+
