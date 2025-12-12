@@ -44,6 +44,7 @@ workflows:
           echo "===== DEPOIS DO PATCH ====="
           PROJECT_FILE="platforms/ios/Saudi-AcomMed.xcodeproj/project.pbxproj"
           grep -R "CODE_SIGN_IDENTITY" -n $PROJECT_FILE || echo "Nenhum CODE_SIGN_IDENTITY encontrado"
+          grep -R "CODE_SIGN_IDENTITY" -n $PROJECT_FILE
           grep -R "DEVELOPMENT_TEAM" -n $PROJECT_FILE || echo "Nenhum DEVELOPMENT_TEAM encontrado"
 
       - name: Build iOS com assinatura automática
