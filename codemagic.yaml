@@ -15,6 +15,10 @@ workflows:
           npm install -g cordova@11.1.0
           npm install
 
+      - name: Remover plataforma Android (evita erro de permissões)
+        script: |
+          cordova platform remove android || true
+
       - name: Preparar plataforma iOS
         script: |
           cordova platform remove ios || true
@@ -27,4 +31,3 @@ workflows:
     artifacts:
       - platforms/ios/build/device/*.ipa
       - platforms/ios/build/**/*.xcarchive
-
